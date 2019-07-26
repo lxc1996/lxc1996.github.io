@@ -1,0 +1,395 @@
+* {
+   text-decoration: none; 
+   box-sizing: border-box;
+   
+}
+a {
+  color:#000;
+}
+
+.header {
+    height:75px;
+    width:100%;
+    position: fixed;
+    top:0;
+    background-color: #fff;
+    z-index: 10000;  
+}
+.header img {
+    /*transform:rotate(180deg);旋转*/
+    margin: 0 60px;
+    cursor:pointer;
+}
+.header a {
+    display:block;
+}
+
+
+.box_1 {
+    width: 100%;
+    height: 75px;
+    position: relative;
+    box-sizing: border-box;
+    padding-left:224px;
+    padding-right:270px;
+  }
+  
+  .box_1 .left {
+    width: 224px;
+    height: 75px;  
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .box_1 .right {
+    width: 272px;
+    height: 75px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .box_1 .right li {
+    height:75px;
+    width:90px;
+    float: left;
+    line-height:75px;
+    text-align: center;
+    font-size: .75em;
+  }
+
+  .header .box_1 .right li a img {
+    margin: 0;
+    margin-top: 22px;
+    height:34px;
+    width:34px;
+  }
+
+  .box_1 .right li:nth-child(2){
+    background-color: #0c2340;
+  }
+  .box_1 .right li:nth-child(2) a {
+    color:#fff;
+  }
+  
+  .box_1 .mid {
+    width: 100%;
+    height: 100%;
+    position:relative;
+    box-sizing: border-box;
+  }
+  /* .box_1 .mid li {
+      height:75px;
+      float: left;
+      text-align:center;
+      line-height:75px;
+      
+  } */
+
+  
+/*************************************下拉按钮****************************************/
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+.wrap>ul>li {
+  float: left;
+  /* margin-right: 10px; */
+  position: relative;
+}
+
+.wrap .lone {
+  display: block;
+  height: 75px;
+  width: 205px;
+  text-decoration: none;
+  color: #000;
+  line-height: 75px;
+  text-align: center;
+  position:relative;
+  
+}
+
+/*旋转箭头///////////////////////////////////////--------------------------------------*/
+.wrap .lone span {
+      position:absolute;
+      top:30px;
+      left:125px;
+      /* display: block; */
+      width: 8px;
+      height: 8px;
+      /* background-color: #ccc; */
+      border-right: 1px solid #000;
+      border-bottom: 1px solid #000;
+      /* 初始化 顺时针 45deg */
+      transform: rotate(45deg);
+      transition: all 0.3s;
+}
+
+.wrap .lone .rotate {
+  position:absolute;
+  top:30px;
+  left:148px;
+}
+
+.wrap .lone .spin {
+  position:absolute;
+  top:30px;
+  left:163px;
+}
+
+
+.wrap .item:hover{
+  background-color: #ccc;
+  border-bottom: 2px solid #000;
+  
+}
+
+.wrap .item:hover span {
+  transform: rotate(-135deg);
+}
+
+.wrap li .ul_1 {
+  width: 1920px;
+  height:336px;
+  position: absolute;
+  top: 75px;
+  left: -250px;
+  display: none;
+  background-color: #fff;
+}
+
+.wrap li .ul_2 {
+  width: 1920px;
+  height:336px;
+  position: absolute;
+  top: 75px;
+  left: -429px;
+  display: none;
+  background-color: #fff;
+}
+
+.wrap li .ul_3 {
+  width: 1920px;
+  height:336px;
+  position: absolute;
+  top: 75px;
+  left: -634px;
+  display: none;
+  background-color: #fff;
+}
+.wrap li .ul_4 {
+  width: 1920px;
+  height:336px;
+  position: absolute;
+  top: 75px;
+  left: -839px;
+  display: none;
+  background-color: #fff;
+}
+.wrap li .ul_5 {
+  width: 1920px;
+  height:336px;
+  position: absolute;
+  top: 75px;
+  left: -1044px;
+  display: none;
+  background-color: #fff;
+}
+
+/* **********************下拉1*************************** */
+.header .mid .ul_1 dl {
+  float: left;
+  margin-left:300px;
+  margin-top: 20px;
+  text-align: center;
+}
+.header .mid .ul_1 dl dd a:hover {
+  border-bottom: 1px solid #000;
+  box-sizing:border-box;
+}
+.header .mid .ul_1 dl dt {
+  font-size:25px;
+}
+.header .mid .wrap .ul_1 dl dd {
+  
+  height:50px;
+  line-height: 50px;
+  
+}
+.header .mid .wrap .ul_1 dl dd span {
+  margin-left: 8px;
+}
+
+
+/* **********************下拉2*************************** */
+
+.header .mid .ul_2 dl {
+  float: left;
+  /* margin-left:300px;
+  margin-top: 20px; */
+  text-align: center;
+}
+.header .mid .ul_2 .pull1 {
+  padding:0 155px;
+}
+
+.header .mid .ul_2 dl{
+  padding:0 90px;
+  border-right: 1px solid #ccc;
+  margin-top: 20px;
+}
+
+.header .mid .ul_2 dl:last-child {
+  border:0;
+}
+
+.header .mid .ul_2 dl dt {
+  font-size: 25px;
+}
+
+.header .mid .ul_2 dl dd {
+  margin-top:15px;
+}
+
+.header .mid .ul_2 dl dd img {
+  margin:0;
+}
+.header .mid .ul_2 dl dd span {
+  font-size: .75em;
+}
+.header .mid .ul_2 dl dd input {
+  width:220px;
+  height:30px;
+  font-size: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.header .mid .ul_2 dl dd:last-child input {
+  background-color: rgb(15, 12, 63);
+  color:#fff;
+}
+
+
+/* **********************下拉3*************************** */
+
+.header .mid .ul_3 dl {
+  float: left;
+  /* margin-left:300px;
+  margin-top: 20px; */
+  text-align: center;
+  margin: 0 65px;
+}
+
+.header .mid .ul_3 .pull2 {
+  padding-left:50px;
+}
+
+.header .mid .ul_3 .pull2 dt {
+  font-size: 25px;
+  margin-top: 20px;
+}
+
+.header .mid .wrap .ul_3 dl .new {
+  font-size:25px;
+  margin-top: 13px;
+}
+
+.header .mid .wrap .ul_3 dl dd {
+  
+  height:50px;
+  line-height: 50px;
+  
+}
+
+.header .mid .ul_3 dl dd a:hover {
+  border-bottom: 2px solid #000;
+}
+
+.header .mid .wrap .ul_3 dl dd span {
+  margin-left: 8px;
+}
+
+
+
+/* **********************下拉4*************************** */
+
+.header .mid .ul_4 dl {
+  float: left;
+  text-align: center;
+  margin: 0 150px;
+}
+
+.header .mid .ul_4 dt {
+  font-size: 25px;
+  margin-top: 20px;
+}
+
+.header .mid .ul_4 .pull3 {
+  padding-left:100px;
+}
+
+.header .mid .wrap .ul_4 dl dd {
+  
+  height:50px;
+  line-height: 50px;
+  
+}
+
+.header .mid .wrap .ul_4 dl .new1 {
+  font-size:25px;
+  margin-top: 13px;
+}
+
+.header .mid .ul_4 dl dd a:hover {
+  border-bottom: 2px solid #000;
+}
+
+.header .mid .wrap .ul_4 dl dd span {
+  margin-left: 8px;
+}
+
+/* **********************下拉5*************************** */
+
+.header .mid .ul_5 dl {
+  float: left;
+  text-align: center;
+  margin: 0 65px;
+}
+
+.header .mid .ul_5 dt {
+  font-size: 25px;
+  margin-top: 20px;
+}
+
+.header .mid .ul_5 .pull4 {
+  padding-left:100px;
+}
+
+.header .mid .wrap .ul_5 dl dd {
+  
+  height:50px;
+  line-height: 50px;
+  
+}
+
+.header .mid .wrap .ul_5 dl .new2 {
+  font-size:25px;
+  margin-top: 13px;
+}
+
+.header .mid .ul_5 dl dd a:hover {
+  border-bottom: 2px solid #000;
+}
+
+.header .mid .wrap .ul_5 dl dd span {
+  margin-left: 8px;
+}

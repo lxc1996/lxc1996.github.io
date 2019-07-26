@@ -1,0 +1,37 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  .drive {
+      width:100%;
+      text-align: center;
+      margin: 50px 0 30px;
+  }
+
+  .drive p {
+      line-height: 50px;
+  }
+
+  .drive .drive_1 {
+      font-size:40px;
+      
+  }
+  .drive .drive_2 {
+      font-size: 18px;  
+  }
+
+  .drive input {
+      width:138px;
+      height:40px;
+      font-size: 16px;
+      border-radius:3px;
+      color:#fff;
+      background-color: #0c2340;
+  }
+
+

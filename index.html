@@ -1,234 +1,604 @@
-﻿<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-<meta charset="utf-8">
-<title>H5抽象花纹动画特效</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="images/2019-07-16_223733.png">
+    <title>玛莎拉蒂合作伙伴 - 玛莎拉蒂（Maserati）中国官网</title>
+    <!DOCTYPE html>
+    <html lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/head.css">
+    <link rel='stylesheet' id='style-css' href='diapo.css' type='text/css' media='all'>
+    <link rel="stylesheet" href="./css/bodyer.css">
+    <link rel="stylesheet" href="./css/drive.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/footer.css">
+    <script src="./js/jquery-1.12.4.js"></script>
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/header.js"></script>
+    <script type='text/javascript' src='scripts/jquery.min.js'></script>
+    <script type='text/javascript' src='scripts/jquery.easing.1.3.js'></script>
+    <script type='text/javascript' src='scripts/jquery.hoverIntent.minified.js'></script>
+    <script type='text/javascript' src='scripts/diapo.js'></script>
+    <script src="./js/bodyer.js"></script>
 
-<style>
-body {
-  background: #000;
-  overflow: hidden;
-}
 
-canvas {
-  display: block;	
-  left: 50%;
-  margin: -200px 0 0 -200px;
-  position: absolute;
-  top: 50%;
-}
-</style>
+    <script>
+        $(function () {
+            $('.pix_diapo').diapo();
+        });
+    </script>
 
 </head>
+
 <body>
 
-<canvas id="canvas" width="400" height="400"></canvas>
 
-<script>
-/*=============================================================================*/	
-/* Smooth Trail
-/*=============================================================================*/
-var smoothTrail = function(c, cw, ch){
-  
-/*=============================================================================*/	
-/* Initialize
-/*=============================================================================*/
-  this.init = function(){
-    this.loop();
-  };		
-  
-  /*=============================================================================*/	
-  /* Variables
-/*=============================================================================*/
-  var _this = this;
-  this.c = c;
-  this.ctx = c.getContext('2d');
-  this.cw = cw;
-  this.ch = ch;
-  this.mx = 0;
-  this.my = 0;
-  
-  //trail
-  this.trail = [];
-  this.maxTrail = 200;
-  this.mouseDown = false;
-  
-  this.ctx.lineWidth = .1;
-  this.ctx.lineJoin = 'round';
-  
-  this.radius = 1;
-  this.speed = 0.4;
-  this.angle = 0;
-  this.arcx = 0;
-  this.arcy = 0;
-  this.growRadius = true;
-  this.seconds = 0;
-  this.milliseconds = 0;
-  
-  /*=============================================================================*/	
-  /* Utility Functions
-/*=============================================================================*/				
-  this.rand = function(rMi, rMa){return ~~((Math.random()*(rMa-rMi+1))+rMi);};
-  this.hitTest = function(x1, y1, w1, h1, x2, y2, w2, h2){return !(x1 + w1 < x2 || x2 + w2 < x1 || y1 + h1 < y2 || y2 + h2 < y1);};
-  
-  /*=============================================================================*/	
-  /* Create Point
-/*=============================================================================*/
-  this.createPoint = function(x, y){					
-    this.trail.push({
-      x: x,
-      y: y						
-    });
-  };
-  
-  /*=============================================================================*/	
-  /* Update Trail
-/*=============================================================================*/
-  this.updateTrail = function(){					
-    
-    if(this.trail.length < this.maxTrail){
-      this.createPoint(this.arcx, this.arcy);
-    }					
-    
-    if(this.trail.length >= this.maxTrail){
-      this.trail.splice(0, 1);
-    }					
-  };
-  
-  /*=============================================================================*/	
-  /* Update Arc
-/*=============================================================================*/
-  this.updateArc = function(){
-    this.arcx = (this.cw/2) + Math.sin(this.angle) * this.radius;
-    this.arcy = (this.ch/2) + Math.cos(this.angle) * this.radius;					
-    var d = new Date();
-    this.seconds = d.getSeconds();
-    this.milliseconds = d.getMilliseconds();
-    this.angle += this.speed*(this.seconds+1+(this.milliseconds/1000));
-    
-    if(this.radius <= 1){
-      this.growRadius = true;
-    } 
-    if(this.radius >= 200){
-      this.growRadius = false;
-    }
-    
-    if(this.growRadius){
-      this.radius += 1;	
-    } else {
-      this.radius -= 1;	
-    }
-  };
-  
-  /*=============================================================================*/	
-  /* Render Trail
-/*=============================================================================*/
-  this.renderTrail = function(){
-    var i = this.trail.length;					
-    
-    this.ctx.beginPath();
-    while(i--){
-      var point = this.trail[i];
-      var nextPoint = (i == this.trail.length) ? this.trail[i+1] : this.trail[i];
-      
-      var c = (point.x + nextPoint.x) / 2;
-      var d = (point.y + nextPoint.y) / 2;						
-      this.ctx.quadraticCurveTo(Math.round(this.arcx), Math.round(this.arcy), c, d);
-      
-      
-      
-    };
-    this.ctx.strokeStyle = 'hsla('+this.rand(170,300)+', 100%, '+this.rand(50, 75)+'%, 1)';	
-    this.ctx.stroke();
-    this.ctx.closePath();
-    
-  };			
- 
-  
-  /*=============================================================================*/	
-  /* Clear Canvas
-/*=============================================================================*/
-  this.clearCanvas = function(){
-    //this.ctx.globalCompositeOperation = 'source-over';
-    //this.ctx.clearRect(0,0,this.cw,this.ch);
-    
-    this.ctx.globalCompositeOperation = 'destination-out';
-    this.ctx.fillStyle = 'rgba(0,0,0,.1)';
-    this.ctx.fillRect(0,0,this.cw,this.ch);					
-    this.ctx.globalCompositeOperation = 'lighter';
-  };
-  
-  /*=============================================================================*/	
-  /* Animation Loop
-/*=============================================================================*/
-  this.loop = function(){
-    var loopIt = function(){
-      requestAnimationFrame(loopIt, _this.c);
-      _this.clearCanvas();
-      _this.updateArc();
-      _this.updateTrail();
-      _this.renderTrail();							
-    };
-    loopIt();					
-  };
-  
-};
+    <!----------------------------------- 头部导航栏------------------------------------>
 
-/*=============================================================================*/	
-/* Check Canvas Support
-/*=============================================================================*/
-var isCanvasSupported = function(){
-  var elem = document.createElement('canvas');
-  return !!(elem.getContext && elem.getContext('2d'));
-};
+    <div class="header">
 
-/*=============================================================================*/	
-/* Setup requestAnimationFrame
-/*=============================================================================*/
-var setupRAF = function(){
-  var lastTime = 0;
-  var vendors = ['ms', 'moz', 'webkit', 'o'];
-  for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x){
-    window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-    window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
-  };
-  
-  if(!window.requestAnimationFrame){
-    window.requestAnimationFrame = function(callback, element){
-      var currTime = new Date().getTime();
-      var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-      var id = window.setTimeout(function() { callback(currTime + timeToCall); }, timeToCall);
-      lastTime = currTime + timeToCall;
-      return id;
-    };
-  };
-  
-  if (!window.cancelAnimationFrame){
-    window.cancelAnimationFrame = function(id){
-      clearTimeout(id);
-    };
-  };
-};			
+        <div class="box_1">
 
-/*=============================================================================*/	
-/* Define Canvas and Initialize
-/*=============================================================================*/
-  if(isCanvasSupported){
-    var c = document.createElement('canvas');
-    c.width = 400;
-    c.height = 400;			
-    var cw = c.width;
-    var ch = c.height;	
-    document.body.appendChild(c);	
-    var cl = new smoothTrail(c, cw, ch);				
-    
-    setupRAF();
-    cl.init();
-  }
-</script>
+            <div class="left">
+
+               <img src="images/下载.svg" alt="" width="104px" height="70px">
+                
+            </div>
+
+
+            <div class="mid">
+
+                <div class="wrap">
+                    <ul>
+                        <!------------------------------------------- 下拉1---------------------------------------------- -->
+                        <li class="item">
+                            <a href="javascript:void(0);" class="lone">品牌<span></span></a>
+                            <ul class="ul_1">
+                                <li>
+                                    <dl>
+                                        <dt>品牌故事</dt>
+                                        <dd><a href="#">意式血统 <span>&gt;</span></a></dd>
+                                        <dd><a href="#">传奇历史<span>&gt;</span></a></dd>
+                                        <dd><a href="#">古董车 <span>&gt;</span></a></dd>
+                                        <dd><a href="#">Alfieri概念车<span>&gt;</span></a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>驾驭激情</dt>
+                                        <dd><a href="#">大师驾驶课程<span>&gt;</span></a></dd>
+                                        <dd><a href="#">百年赛车传奇 <span>&gt;</span></a></dd>
+                                        <dd><a href="#">工厂之旅<span>&gt;</span></a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>合作伙伴</dt>
+                                        <dd><a href="#">杰尼亚<span>&gt;</span></a></dd>
+                                        <dd><a href="#">宝格丽<span>&gt;</span></a></dd>
+                                        <dd><a href="#">La Martina <span>&gt;</span></a></dd>
+                                        <dd><a href="#">壳牌<span>&gt;</span></a></dd>
+
+                                    </dl>
+                                </li>
+                            </ul>
+                        </li>
+                        <!------------------------------------------- 下拉2---------------------------------------------- -->
+                        <li class="item">
+                            <a href="javascript:void(0);" class="lone">车型 <span></span></a>
+                            <ul class="ul_2">
+                                <li class="pull1">
+                                    <dl>
+                                        <dt>Ghibli轿车系列</dt>
+                                        <dd><a href="#"><img src="./images/1.png" alt="" width="180px"></a></dd>
+                                        <dd><span>建议零售价</span></br>88.08万RMB起</dd>
+                                        <dd><input type="button" value="了解更多"></dd>
+                                        <dd><input type="button" value="个性化配置"></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Levante SUV系列</dt>
+                                        <dd><a href="#"><img src="./images/2.png" alt="" width="180px"></a></dd>
+                                        <dd><span>建议零售价</span></br>96.18万RMB起</dd>
+                                        <dd><input type="button" value="了解更多"></dd>
+                                        <dd><input type="button" value="个性化配置"></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Quattroporte总裁系列</dt>
+                                        <dd><a href="#"><img src="./images/3.png" alt="" width="180px"></a></dd>
+                                        <dd><span>建议零售价</span></br> 140.58万RMB起</dd>
+                                        <dd><input type="button" value="了解更多"></dd>
+                                        <dd><input type="button" value="个性化配置"></dd>
+                                    </dl>
+                                </li>
+                            </ul>
+                        </li>
+                        <!------------------------------------------- 下拉3 ---------------------------------------------- -->
+                        <li class="item">
+                            <a href="javascript:void(0);" class="lone">新闻&活动<span class="rotate"></span></a>
+                            <ul class="ul_3">
+                                <li class="pull2">
+                                    <dl>
+                                        <dd class="new"><a href="#">新闻<span>&gt;</span></a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>活动</dt>
+                                        <dd><a href="#">速度嘉年华<span>&gt;</span></a></dd>
+                                        <dd><a href="#">马球巡回赛<span>&gt;</span></a></dd>
+                                        <dd><a href="#">古董车赛事<span>&gt;</span></a></dd>
+                                        <dd><a href="#">法拉帝游艇节<span>&gt;</span></a></dd>
+                                        <dd><a href="#">吉尼斯世界纪录<span>&gt;</span></a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>车展</dt>
+                                        <dd><a href="#">2019 上海车展<span>&gt;</span></a></dd>
+                                        <dd><a href="#">2019 日内瓦车展<span>&gt;</span></a></dd>
+                                        <dd><a href="#">2018 广州车展<span>&gt;</span></a></dd>
+                                        <dd><a href="#">2018 成都车展<span>&gt;</span></a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>挑战</dt>
+                                        <dd><a href="#">Giovanni Soldini 赛事<span>&gt;</span></a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>驾驶体验</dt>
+                                        <dd><a href="#">大师驾驶课程体验<span>&gt;</span></a></dd>
+                                        <dd><a href="#">MY19全系驾驶体验<span>&gt;</span></a></dd>
+                                        <dd><a href="#">Levante V8驾驶体验<span>&gt;</span></a></dd>
+                                        <dd><a href="#">冬季驾驶体验<span>&gt;</span></a></dd>
+                                        <dd><a href="#">沙漠驾驶体验<span>&gt;</span></a></dd>
+                                    </dl>
+                                </li>
+                            </ul>
+                        </li>
+                        <!------------------------------------------- 下拉4 ---------------------------------------------- -->
+                        <li class="item">
+                            <a href="javascript:void(0);" class="lone">服务&售后支持<span class="spin"></span></a>
+                            <ul class="ul_4">
+                                <li class="pull3">
+                                    <dl>
+                                        <dd class="new1"><a href="#">金融服务<span>&gt;</span></a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>售后支持</dt>
+                                        <dd><a href="#">车辆保养服务<span>&gt;</span></a></dd>
+                                        <dd><a href="#">延长保修期<span>&gt;</span></a></dd>
+                                        <dd><a href="#">保养计划<span>&gt;</span></a></dd>
+                                        <dd><a href="#">其他服务<span>&gt;</span></a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>设备支持</dt>
+                                        <dd><a href="#">蓝牙兼容性<span>&gt;</span></a></dd>
+                                        <dd><a href="#">古董车服务<span>&gt;</span></a></dd>
+                                        <dd><a href="#">联系我们<span>&gt;</span></a></dd>
+                                    </dl>
+                                </li>
+                            </ul>
+                        </li>
+                        <!------------------------------------------- 下拉5 ---------------------------------------------- -->
+                        <li class="item">
+                            <a href="javascript:void(0);" class="lone">工具&支持<span class="rotate"></span></a>
+                            <ul class="ul_5">
+                                <li class="pull4">
+                                    <dl>
+                                        <dt>车型配置器</dt>
+                                        <dd><a href="#">Ghibli轿车系列<span>&gt;</span></a></dd>
+                                        <dd><a href="#">Levante SUV系列 <span>&gt;</span></a></dd>
+                                        <dd><a href="#">Quattroporte总裁系列 <span>&gt;</span></a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dd class="new2"><a href="#">预约试驾<span>&gt;</span></a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dd class="new2"><a href="#">经销商查询<span>&gt;</span></a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dd class="new2"><a href="#">机动车环保信息公开<span>&gt;</span></a></dd>
+                                    </dl>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
 
 
 
-</div>
+            </div>
+
+
+
+
+
+            <div class="right">
+
+                <ul>
+                    <li><a href="#">经销商查询</a></li>
+                    <li><a href="#">试驾</a></li>
+                    <li><a href="#"><img src="./images/2019-07-17_211903.png" alt=""></a></li>
+                </ul>
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <!-----------------------------------   轮播图  ------------------------------------>
+
+    <section>
+
+        <div style="overflow:hidden; width:100%; margin:75px auto 0;">
+            <div class="pix_diapo">
+
+                <div data-thumb="images/thumbs/Maserati-Tessuto_sezione-Zegna.jpg" width="50" height="50">
+                    <img src="images/slides/Maserati-Tessuto_sezione-Zegna.jpg" width="1519.2" height="666.66">
+                    <div class="caption elemHover fromLeft;" style="font-size:40px;">
+                        玛莎拉蒂携手杰尼亚
+                        <span style="font-size:20px;">意式定制，满足多元需求</span>
+                    </div>
+                </div>
+
+                <div data-thumb="images/thumbs/bulgari.jpg" width="50" height="50">
+                    <img src="images/slides/bulgari.jpg" width="1519.2" height="666.66">
+                    <div class="caption elemHover fromRight"
+                        style="bottom:65px; padding-bottom:20px; color:#fff; text-transform:uppercase;font-size: 40px;">
+                        玛莎拉蒂和宝格丽
+                    </div>
+                    <div class="caption elemHover fromLeft" style="padding-top:5px; font-size: 20px;">
+                        意大利品牌携手合作
+                    </div>
+                </div>
+
+                <div data-thumb="images/thumbs/la-martina-hero.jpg" data-time="7000" width="50" height="50">
+                    <img src="images/slides/la-martina-hero.jpg" width="1519.2" height="666.66">
+                    <div class="elemHover caption fromLeft"
+                        style="bottom:70px; width:auto; -webkit-border-top-right-radius: 6px; -webkit-border-bottom-right-radius: 6px; -moz-border-radius-topright: 6px; -moz-border-radius-bottomright: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; font-size:40px; line-height:50px;">
+                        玛莎拉蒂与La Martina：强强联袂
+                    </div>
+                    <!-- <div class="elemHover button fromTop" data-easing="easeOutExpo" style="left:388px; bottom:78px;">
+                            A button
+                        </div>
+                        <div class="elemHover button button2 fromBottom" data-easing="easeOutExpo" style="left:512px; bottom:78px;">
+                            Or two buttons
+                        </div> -->
+                    <div class="elemHover fadeIn">
+                       
+                        
+                    </div>
+                </div>
+
+                <div data-thumb="images/thumbs/shell.jpg" width="50" height="50">
+                    <img src="images/slides/shell.jpg" width="1519.2" height="666.66">
+                    <div class="elemHover caption fromLeft elemToHide"
+                        style="bottom: 350px; width:auto; -webkit-border-top-right-radius: 6px; -webkit-border-bottom-right-radius: 6px; -moz-border-radius-topright: 6px; -moz-border-radius-bottomright: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; left:0; font-size:40px;line-height:30px;">
+                        前进动力<br>
+                        <span style="font-size:20px;line-height:30px;">合作始于对优越和创新的共同激情，激发强悍引擎性能</span>
+                    </div>
+                </div>
+
+
+
+            </div><!-- #pix_diapo -->
+
+        </div>
+
+
+    </section>
+
+
+    <!-- ---------------线-------------- -->
+
+    <div class="line_l">
+        <div class="left"></div>
+        <div class="mid">
+            <p>单丝不成线，独木不成林</p>
+        </div>
+        <div class="right"></div>
+    </div>
+
+
+    <!-----------------------------------   主体区域  ------------------------------------>
+
+    <div class="wrapper">
+        <ul class="tab">
+            <!--顶部操作的按钮-->
+            <li class="tab-item active">杰尼亚<span>◆</span></li>
+            <li class="tab-item">宝格丽<span>◆</span></li>
+            <li class="tab-item">La Martina<span>◆</span></li>
+            <li class="tab-item">壳牌</li>
+        </ul>
+        <div class="products">
+            <!--下部对应显示的内容-->
+            <div class="main tall1 selected">
+                <ul>
+                    <li>
+                        <p>历经百年发展，玛莎拉蒂与杰尼亚的众多杰作无不证明，唯有对细节的精益求精和富有远见的创新精神，方可成就精湛设计。两大意大利品牌强强联袂，为玛莎拉蒂Ghibli轿车、Quattroporte总裁轿车和SUV
+                            Levante打造专属定制内饰，再次证明这一真理。</p>
+                    </li>
+                    <li>
+                        <p>时尚精致的内饰，以独特细腻的剪裁和别具匠心的色彩搭配，内饰采用精湛的缝制手法，尼亚桑蚕丝嵌入座椅。这些精心打造的车型彰显了玛莎拉蒂和杰尼亚始终恪守的品牌传统匠心定制，缔造品质。</p>
+                    </li>
+                    <li>
+                        <h1>Capsule系列</h1>
+                        <p>Capsule系列由杰尼亚与玛莎拉蒂携手打造，融合两大品牌共同的时尚品位传承。Capsule系列包括采用皮革精心打造的服饰及配件，以庆贺杰尼亚为玛莎拉蒂定制的新内饰套件上市，玛莎拉蒂Quattroporte总裁轿车和Ghibli轿车所有车型均可选配杰尼亚内饰套件。
+                        </p>
+                    </li>
+                    <li>
+                        <h1>匠心传承</h1>
+                        <p>在现代技术飞速发展之前，才华横溢的工匠仅凭一双巧手和基本的工具，雕琢出的艺术臻品。如今，玛莎拉蒂与杰尼亚秉承这一传统，坚持以手工技艺打造每一处精致细节。</p>
+                    </li>
+                    <li>
+                        <h1>2015玛莎拉蒂品质生活之旅</h1>
+                        <p>怀着对手工品质的共同追求，玛莎拉蒂与杰尼亚再次携手，今秋将推出为2016款车型联合设计的全新内饰选装套件。<br /><br />为庆贺此次合作，玛莎拉蒂于2015年6月15日至17日举办为期3天的旅行，并发布2016款Quattroporte总裁轿车和Ghibli轿车。篮球明星卡梅隆•安东尼
+                            (Carmelo Anthony) 作为特邀嘉宾出席发布会。</p>
+                    </li>
+                    <li class="border_img">
+                        <img src="./images/杰尼亚头图.jpg" alt="" width="1519.2px" height="666.6px">
+                    </li>
+                    <li>
+                        <h1>致敬玛莎拉蒂百年庆典</h1>
+                        <p>100台Quattroporte总裁轿车，专为品位不凡的汽车设计鉴赏家打造。
+                            <br /><br />
+                            玛莎拉蒂在全球范围内隆重举办四场发布会，庆祝全新玛莎拉蒂Quattroporte总裁轿车杰尼亚限量版问世。</p>
+                    </li>
+                    <li>
+                        <h1>玛莎拉蒂Quattroporte总裁轿车杰尼亚限量版</h1>
+                        <p>自1914年创立以来，无论赛场内外，玛莎拉蒂始终秉承意大利经典手工工艺。为致敬品牌百年辉煌历程，玛莎拉蒂与杰尼亚再度携手，以前所未有的构思与展望打造这一限量版车型，为Quattroporte总裁轿车赋予全新定义。
+                        </p>
+                    </li>
+                    <li>
+                        <h1>百分之一</h1>
+                        <h3>2014年，玛莎拉蒂Quattroporte总裁轿车杰尼亚限量版发布会在上海、纽约、迪拜和米兰相继举行。</h3>
+                        <br /><br />
+                        <p>FABRIZIO FERRI的艺术巧思
+                            <br /><br />
+                            打造玛莎拉蒂Quattroporte总裁轿车杰尼亚限量版这样的独特之作，绝非易事，需要众人巧手合作。为致敬这100台尊贵座驾幕后的技术专家和艺术家，发布会现场将同时举办别开生面的摄影活动。四场全球发布会分别挑选出25位职业与手有关的人，这100位精英人士包括艺术家、作家和运动员，他们将共同参与世界著名摄影师Fabrizio
+                            Ferri的一项艺术创作。每个人的手部摄影特写将与玛莎拉蒂Quattroporte总裁系列杰尼亚限量版的照片一同收集在一本精美的纪念册中。</p>
+                    </li>
+                    <li>
+                        <h1>更多</h1>
+                    </li>
+                </ul>
+            </div>
+            <div class="main tall2">
+                <ul>
+                    <li>
+                        <h1>意大利品牌携手合作</h1>
+                        <p>宝格丽无需过多介绍，其作品的美丽、精致和优雅足以彰显品牌内涵。宝格丽的经典之作聚了130年的珠宝设计历史，也让意大利工艺享誉全球。玛莎拉蒂和宝格丽如同硬币的正两面：共同的价值理念是两者成功合作的坚实基础。在2012年成功发布合作定制腕表的础上，玛莎拉蒂和宝格丽又共同推出时尚感十足的宝格丽Octo
+                            Maserati腕表系列。</p>
+                    </li>
+                    <li>
+                        <img src="./images/77281mas2-2_cc_white.jpg" alt="" width="1399.2px">
+                    </li>
+                    <li class="img_ma">
+                        <img src="./images/bulgari_casamaserati.jpg" alt="" width="684.6">
+                        <span>
+                            <h3>宝格丽Octo Maserati腕表：经典时计之作</h3>宝格丽Octo
+                            Maserati腕表令人赏心悦目，鉴赏家应能一眼看出这款腕表的银蓝配色与玛莎拉蒂的设计特征遥相呼应，鳄鱼皮革表带巧妙应和玛莎拉蒂的优雅内饰。腕表中内藏一个精妙的高频装置，为掐丝珐琅表盘上引人注目的三个天文显示窗提供动力。创新中不乏灵感创意，彰显佩戴者的独特个性，也演绎出玛莎拉蒂集优雅与动感于一身的勃勃生机。为庆贺玛莎拉蒂100周年华诞，宝格丽特以品牌创立年份制作了1914枚腕表，以示纪念。
+                        </span>
+                    </li>
+                    <li class="border_img2">
+                        <img src="./images/Gallery-6.jpg" alt="" width="1519.2" height="666.66">
+                        <p>
+                            <strong>宝格丽Octo Maserati限量版腕表</strong><br />经典时计之作，融合两大意式品牌的价值理念
+                        </p>
+
+                    </li>
+                    <li class="shop">
+                        <p>此款腕表可通过玛莎拉蒂全球经销商购买。欧洲客户还可通过在线商店购买。</p>
+                        <input type="button" value="访问我们在线商店">
+                    </li>
+                    <li>
+                        <h1>更多</h1>
+                    </li>
+                </ul>
+            </div>
+            <div class="main tall3">
+                <ul>
+                    <li>
+                        <p>怀着对优雅的共同追求，2011年起玛莎拉蒂就与La Martina建立持续的合作关系。过去五年来，两大品牌相互融汇，打造出La
+                            Martina玛莎拉蒂Capsule系列，充分诠释了灵感源于马球运动的服饰精髓。</p>
+                    </li>
+                    <li>
+                        <img src="./images/MasPoloFinal_060.jpeg" alt="" width="1339.2" height="787.05">
+                    </li>
+                    <li>
+                        <h1>玛莎拉蒂与La Martina联袂出品：“马球故事”系列视频——第一集</h1>
+                        <h3>La Martina<storing>形象大使</storing>Ebe Sievwright</h3>
+                    </li>
+                    <li class="border_img3">
+                        <img src="./images/la-martina-video-crop2t.jpg" alt="" width="1519.2" height="765.93">
+                    </li>
+                    <li>
+                        <p>
+                            “马球故事”系列视频是一项独特的全球性项目，跟随2016年玛莎拉蒂马球巡回赛在不同城市录制。该项目将通过一系列视频，挖掘马球运动的起源、历史发展以及La
+                            Martina和马球运动与玛莎拉蒂之间的独特联系。赛车和骑术同样追求优雅、策略、格调，注重力量、速度和竞争。马球运动需要专注于细节，在优雅与力量之间寻求平衡，这与玛莎拉蒂的品牌理念一脉相承，因此结下不解之缘。
+                        </p>
+                        <p class="text">
+                            La Martina与玛莎拉蒂的联手可谓天作之合，两个品牌立足于同样的价值根源：对运动的热爱。
+                        </p>
+
+                    </li>
+                    <li class="border_img4 clearfix">
+                        <img src="./images/Maserati-Dubai-Polo-Challenge-2016_sm_crop.jpg" alt="" width="769.55"
+                            height="540.21">
+                        <p>
+                            如果说足球是“美丽的游戏”，那马球就是优雅的游戏，代表着对技巧、激情、速度和力量的考验。马球运动与La Martina品牌同具有深厚的渊源。La
+                            Martina是一个在全球范围内坚定捍卫阿根廷设计风格的品牌，最初以马球装备闻名，如今在休闲服饰和配领域同样享誉于世。<br />
+                            过去五年来，玛莎拉蒂与La
+                            Martina的合作不断深化，在欧洲、中东、美国和中国各地积极参与马球赛事。二者联合举办的玛莎蒂马球巡回赛奠定了玛莎拉蒂作为世界重要马球锦标赛主要赞助商的地位，La
+                            Martina长期担任玛莎拉蒂球队的官方供应商。
+                        </p>
+                    </li>
+                    <li class="border_img5 clearfix">
+                        <img src="./images/MNT_3321.jpg" alt="" width="769.55" height="512.51">
+                        <h1>2016－2017秋冬系列</h1>
+                        <p>
+                            2016－2017秋冬系列的主题是多功能与革新。该系列在造型、色彩和材质上进行大调整，并对服装配件进行精心改动，将玛莎拉蒂马球巡回赛的冬季元素融入活力十的休闲时装设计中。
+                            <br>
+                            <br>
+                            La
+                            Martina为玛莎拉蒂独家设计的专属精品系列巧妙融合了马球与赛车两个不同领的独特元素，打造出无论专业运动人士还是现代绅士均可自信穿着的服饰，沿袭了大品牌悠久的价值理念，象征着生活方式、运动精神和高雅品位。
+                        </p>
+
+                    </li>
+
+                    <li class="border_img6">
+                        <p>
+                            马球运动员防风夹克专为冬季和换季而设计。外层为反光尼龙材质，可在雨天等恶劣气条件下提供全面防护。内层带有可拆卸式棉质背心，搭配羊绒内衬，既隔热又环保，可极寒条件下有效保暖。
+                            <br>
+                            <br>
+                            此次发布的秋冬系列还包括一件质地柔软的羊毛连帽衫，采用拉链设计并搭配印花尼龙肩，另有三款独家发售的马球衫。该系列以几何平面球形印花图案为特色，象征玛莎拉和La
+                            Martina在国际主要马球赛场举行巡回赛。
+                        </p>
+                    </li>
+                    <li class="border_img7">
+                        <img src="./images/920009394_01.jpg" alt="" width="769.55" height="769.55">
+                        <h1>2016春夏系列</h1>
+                        <p>
+                            该系列灵感源自马球运动员的赛场装束，采用新颖精致的设计，展现马球运动员在赛场外的日常风采。<br>
+                            春夏系列包括一件设计考究的微纤维材质赛后运动上衣，衣领下采用拉链开合设计；以及一件收腰短夹克，采用暗线缝制和前拉链计，白色面料剪裁，呈现出贯穿整个系列的简约气质。两款马球衫与玛莎拉蒂赛车服外观相近，饰有皮革拼贴和银质印花图案，是后换装和出席社交场合的必备服饰。
+                            <br><br>
+                            英国前首相丘吉尔的直系后裔George Spencer-Churchill曾穿着玛莎拉蒂球队马球衫，在
+                            “水晶宫公园马球挑战赛”中迎战哈里子。该赛事于2015年5月24日在Cirencester
+                            Park马球俱乐部举行，是为支持剑桥公爵威廉王子的公益社团组织举办的专场比赛。Cirencester Park马球俱乐部建于1894年，是英国有声望的马球俱乐部之一。
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>“玛莎拉蒂马球巡回赛”限量版系列</strong>
+                            <br>
+                            <br>
+                            玛莎拉蒂携手La Martina为玛莎拉蒂马球巡回赛的每站赛事推出一款限量版马球衫，设计灵感源自各个赛事，特征鲜明，每款限量发行300件。
+                            <br><br>
+                            在迪拜马球挑战赛期间，两大品牌联袂推出特别款“24K金迪拜马球衫”，弹力织物面料上绣有精致的24K金线。“24K金迪拜马球衫”由位于迪拜和阿联酋购物中心的La
+                            Martina品牌门店独家发售，之后将陆续登陆伦敦和米兰旗舰店。
+                        </p>
+                    </li>
+                    <li>
+                        <h1>更多</h1>
+                    </li>
+                </ul>
+            </div>
+            <div class="main tall4">
+                <ul>
+                    <li class="border_img8">
+                        <h1>驱动力</h1>
+                        <p>
+                            <strong>壳牌与玛莎拉蒂同样致力于为全球追求优越的驾驶者提供产品，玛莎拉蒂采用的机油需要满足发动机不断变化的需求，同时提发动机的性能并延长其寿命。</strong><br /><br />
+                            历经40年科学研发的壳牌PurePlus技术通过革命性的天然气合成油过程，可将天然气转化为如水晶般清澈纯净的合成基础油纯度高达99.5%。采用PurePlus技术研制的壳牌喜力润滑油可以更好地清洁和保护发动机，减少发动机沉积物。这一新款发机润滑油能提供良好的磨损防护，延长发动机寿命并降低维护成本。
+                        </p>
+
+                    </li>
+
+                    <li class="border_img9">
+                        <img src="./images/_BW14095.jpg" alt="" width="1519.2" height="756">
+                    </li>
+                    <li class="border_img10">
+                        <img src="./images/Shell_product-flat_l.jpg" alt="" width="769.55" height="621.4">
+                        <h1> 良好的发动机性能</h1>
+                        <p>
+                            <span>壳牌PurePlus技术即便在恶劣气候条件下也能为发动机提供良好的性能。</span>
+                            <br>
+                            良好品质的机油可使玛莎拉蒂驾驶者享受良好的驾驭体验。<br>
+                            每台玛莎拉蒂发动机在离开生产线时都已添加采用PurePlus技术研制的壳牌喜力润滑油。
+                        </p>
+                    </li>
+                    <li>
+                        <!-- <h1>更多</h1> -->
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- -------------------------------   预约试驾   ----------------------------------- -->
+
+    <div class="drive">
+        <img src="./images/2019-07-15_195048.jpg" alt="" width="60px">
+        <p class="drive_1">预约试驾</p>
+        <p class="drive_2">纵享玛莎拉蒂非凡驾趣</p>
+        <input type="button" value="即可预约">
+    </div>
+
+
+    <!-- -------------------------------   返回顶部   ----------------------------------- -->
+
+    <div class="toolbar">
+
+            <a href="###" class="toolbar-item toolbar-item-weixin">
+            <span class="toolbar-layer"><img src="./images/公众号.jpg" alt=""  width="200px" height="200px"></span>
+            </a>
+         
+            <a href="###" class="toolbar-item toolbar-item-feedback"></a>
+            
+            <a href="###" class="toolbar-item toolbar-item-app">
+             <span class="toolbar-layer"><img src="./images/官方微信.png" alt="" width="200px" height="200px"></span>
+            </a>
+         
+            <a href="javascript:scroll(0,0)" id="top" class="toolbar-item toolbar-item-top"></a>
+         </div>
+
+
+
+    <!-----------------------------------   尾部区域  ------------------------------------>
+
+
+    <div class="di_bu">
+        <div class="shang">
+
+            <div class="lis1">
+                <ul>
+                    <li class="li11">车型</li>
+                    <li>Ghibli轿车系列</li>
+                    <li>Levante SUV系列</li>
+                    <li>Quattroporte总裁系列</li>
+                </ul>
+            </div>
+
+            <div class="lis2">
+                <ul>
+                    <li>品牌</li>
+                    <li>媒体</li>
+                    <li>工具&服务</li>
+                    <li>沪ICP备15009807号</li>
+                    <li>沪公网安备 31019002000307号</li>
+                </ul>
+            </div>
+
+            <div class="lis3">
+                <ul>
+                    <li>联系我们</li>
+                    <li>蓝牙</li>
+                    <li>机动车环保信息公开</li>
+                </ul>
+            </div>
+            <div class="su_xian"></div>
+            <div class="right">
+                <div class="spp">
+                    <span class="sp1"></span>
+                    <span class="sp2">China</span>
+                    <span class="sp3">选择地区</span>
+                </div>
+                <p>关注我们</p>
+                <div class="zu_c">注册了解玛莎拉蒂信息</div>
+            </div>
+        </div>
+
+        <div class="xia_bu">
+            <div class="xia1"></div>
+            <div class="heng_x"></div>
+            <div class="sou_suo"></div>
+            <div class="logo22"></div>
+            <div class="cook">
+                <a href="#">Cookie Policy</a>
+                <a href="#">Legal Notes</a>
+            </div>
+        </div>
+    </div>
+
+
 </body>
+
 </html>
